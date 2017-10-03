@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">IKPMD_App</string>
+
+    '<!--' MainActivity '-->'
+    <string name="action_settings">Settings</string>
+    <string name="img_description">This is the DinoDeluxe Logo.</string>
+    <string name="lbl_credentials">Enter your credentials:</string>
+    <string name="lbl_forgot_password">Forgotten password?</string>
+    <string name="txt_username">Username</string>
+    <string name="txt_password">Password</string>
+    <string name="btn_login">Log in</string>
+
+    '<!--' MainNavigation '-->'
+    <string name="title_activity_main_navigation">MainNavigation</string>
+    <string name="title_servers">Servers</string>
+    <string name="title_database_info">Dino Data</string>
+    <string name="title_edit_database">Edit Data</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

@@ -1,0 +1,30 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="layout.dinoDataFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <GridView
+            android:id="@+id/gridDinoData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="2" />
+
+        <Button
+            android:id="@+id/btnEditSelectedData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Selected" />
+
+    </LinearLayout>
+
+</FrameLayout>

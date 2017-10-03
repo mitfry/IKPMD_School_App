@@ -1,0 +1,35 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="layout.serversFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnRefreshServers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Refresh Server Info" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvServerData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Servers Fragment" />
+        </ScrollView>
+
+    </LinearLayout>
+
+
+</FrameLayout>
