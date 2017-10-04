@@ -1,24 +1,18 @@
 package s1080488.ikpmd_app.Threads;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Iterator;
-
 import layout.serversFragment;
-import s1080488.ikpmd_app.MainActivity;
+import s1080488.ikpmd_app.MainNavigation;
+
 
 /**
  * Created by Mitchell on 27-9-2017.
@@ -26,13 +20,22 @@ import s1080488.ikpmd_app.MainActivity;
 
 public class fetchServerData extends AsyncTask<Void, Void, Void> {
     private String rawStreamData = "";
-    private String parsedSteamData = "";
+    private String parsedSteamData = ""; // Misschien nodig voor een JSON array
     private String allParsedStreamData = "";
+    private String json_url = "";
+
+    //MainNavigation mainNavigation = new MainNavigation();
+    public fetchServerData(String url) {
+        super();
+        json_url = url;
+        // do stuff
+    }
 
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            URL url = new URL("https://ark-servers.net/api/?object=servers&element=detail&key=KGj7i6Jy3iXCtHyb9SdF3fMPRCWZfPnIigG");
+            URL url = new URL(json_url);
+            Log.d("json_url"," "+json_url);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             InputStream dataStream = urlConnection.getInputStream();
             BufferedReader dataReader = new BufferedReader(new InputStreamReader(dataStream));
@@ -85,6 +88,19 @@ public class fetchServerData extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        serversFragment.tvServerData.setText(this.allParsedStreamData);
+        MainNavigation.serverData = null;
+        MainNavigation.serverData = allParsedStreamData;
+        Log.d("allParsedStreamData"," "+allParsedStreamData);
+
+        //Set results in fragment
+        if (allParsedStreamData.contains("Island")) {
+            serversFragment.tvServerData1.setText(allParsedStreamData);
+        } else if (allParsedStreamData.contains("Scorched")) {
+            serversFragment.tvServerData2.setText(allParsedStreamData);
+        } else if (allParsedStreamData.contains("Center")) {
+            serversFragment.tvServerData3.setText(allParsedStreamData);
+        } else if (allParsedStreamData.contains("Ragnarok")) {
+            serversFragment.tvServerData4.setText(allParsedStreamData);
+        }
     }
 }

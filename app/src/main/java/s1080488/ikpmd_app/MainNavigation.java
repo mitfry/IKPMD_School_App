@@ -7,15 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.MenuItem;
+
+import java.util.Arrays;
+
 import layout.dinoDataFragment;
 import layout.editDataFragment;
 import layout.serversFragment;
-import s1080488.ikpmd_app.Databases.DatabaseHelper;
+import s1080488.ikpmd_app.Threads.fetchServerData;
 
 
 public class MainNavigation extends AppCompatActivity {
     Fragment bottomNavFragment;
+    public static String serverData;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -52,9 +57,11 @@ public class MainNavigation extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        //prepare server data
+
+
         //Set default title for this fragment
         getSupportActionBar().setTitle(R.string.title_servers);
-
     }
 
     public void changeFragment() {
@@ -63,5 +70,27 @@ public class MainNavigation extends AppCompatActivity {
                 android.R.anim.fade_out).show(bottomNavFragment);
         ft.replace(R.id.mainNavFragment, bottomNavFragment);
         ft.commit();
+    }
+
+    public void loadServerData(String[] urls) {
+        for (String url : urls) {
+            //fetchServerData.json_url = url;
+            fetchServerData process = new fetchServerData(url);
+            process.execute();
+        }
+    }
+
+
+    public void setServerData() {
+        //Set results in fragment
+        if (Arrays.asList(serverData).contains("Island")) {
+            serversFragment.tvServerData1.setText(serverData);
+        } else if (Arrays.asList(serverData).contains("Scorched Earth")) {
+            serversFragment.tvServerData2.setText(serverData);
+        } else if (Arrays.asList(serverData).contains("The Center")) {
+            serversFragment.tvServerData3.setText(serverData);
+        } else if (Arrays.asList(serverData).contains("Ragnarok")) {
+            serversFragment.tvServerData4.setText(serverData);
+        }
     }
 }

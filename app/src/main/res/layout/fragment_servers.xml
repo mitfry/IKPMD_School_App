@@ -8,6 +8,7 @@
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
+        android:id="@+id/serverDataLinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -18,15 +19,38 @@
             android:layout_height="wrap_content"
             android:text="Refresh Server Info" />
 
+        <TextView
+            android:id="@+id/tvServerData1"
+            style="@style/txtField_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Servers Fragment 1" />
+
+        <TextView
+            android:id="@+id/tvServerData2"
+            style="@style/txtField_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Servers Fragment 2" />
+
+        <TextView
+            android:id="@+id/tvServerData3"
+            style="@style/txtField_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Servers Fragment 3" />
+
+        <TextView
+            android:id="@+id/tvServerData4"
+            style="@style/txtField_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Servers Fragment 4" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tvServerData"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Servers Fragment" />
         </ScrollView>
 
     </LinearLayout>
