@@ -90,17 +90,19 @@ public class fetchServerData extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
         MainNavigation.serverData = null;
         MainNavigation.serverData = allParsedStreamData;
-        Log.d("allParsedStreamData"," "+allParsedStreamData);
+        MainNavigation.serversData.add(allParsedStreamData);
+
+        //Log.d("serversData: ", "" + MainNavigation.serversData);
 
         //Set results in fragment
-        if (allParsedStreamData.contains("Island")) {
-            serversFragment.tvServerData1.setText(allParsedStreamData);
-        } else if (allParsedStreamData.contains("Scorched")) {
-            serversFragment.tvServerData2.setText(allParsedStreamData);
-        } else if (allParsedStreamData.contains("Center")) {
-            serversFragment.tvServerData3.setText(allParsedStreamData);
-        } else if (allParsedStreamData.contains("Ragnarok")) {
-            serversFragment.tvServerData4.setText(allParsedStreamData);
-        }
+//        if (allParsedStreamData.contains("Island")) {
+//            serversFragment.tvServerData1.setText(allParsedStreamData);
+//        } else if (allParsedStreamData.contains("Scorched")) {
+//            serversFragment.tvServerData2.setText(allParsedStreamData);
+//        } else if (allParsedStreamData.contains("Center")) {
+//            serversFragment.tvServerData3.setText(allParsedStreamData);
+//        } else if (allParsedStreamData.contains("Ragnarok")) {
+//            serversFragment.tvServerData4.setText(allParsedStreamData);
+//        }
     }
 }

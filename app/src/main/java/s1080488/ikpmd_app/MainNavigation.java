@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import layout.dinoDataFragment;
@@ -21,6 +22,7 @@ import s1080488.ikpmd_app.Threads.fetchServerData;
 public class MainNavigation extends AppCompatActivity {
     Fragment bottomNavFragment;
     public static String serverData;
+    public static ArrayList<String> serversData;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -58,7 +60,7 @@ public class MainNavigation extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //prepare server data
-
+        loadServerData(serversFragment.json_urls);
 
         //Set default title for this fragment
         getSupportActionBar().setTitle(R.string.title_servers);
@@ -73,24 +75,29 @@ public class MainNavigation extends AppCompatActivity {
     }
 
     public void loadServerData(String[] urls) {
+        //Clear serversData list
+        serversData = new ArrayList<>();
         for (String url : urls) {
-            //fetchServerData.json_url = url;
             fetchServerData process = new fetchServerData(url);
             process.execute();
         }
     }
 
+    public void logServerData(){
+        Log.d("ServersData ->"," "+serversData);
+    }
+
 
     public void setServerData() {
         //Set results in fragment
-        if (Arrays.asList(serverData).contains("Island")) {
-            serversFragment.tvServerData1.setText(serverData);
-        } else if (Arrays.asList(serverData).contains("Scorched Earth")) {
-            serversFragment.tvServerData2.setText(serverData);
-        } else if (Arrays.asList(serverData).contains("The Center")) {
-            serversFragment.tvServerData3.setText(serverData);
-        } else if (Arrays.asList(serverData).contains("Ragnarok")) {
-            serversFragment.tvServerData4.setText(serverData);
+        if (serversData.get(0).contains("Island")) {
+            serversFragment.tvServerData1.setText(serversData.get(0));
+        } else if (serversData.get(1).contains("Scorched Earth")) {
+            serversFragment.tvServerData2.setText(serversData.get(1));
+        } else if (serversData.get(2).contains("The Center")) {
+            serversFragment.tvServerData3.setText(serversData.get(2));
+        } else if (serversData.get(3).contains("Ragnarok")) {
+            serversFragment.tvServerData4.setText(serversData.get(3));
         }
     }
 }

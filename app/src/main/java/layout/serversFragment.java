@@ -16,7 +16,7 @@ import s1080488.ikpmd_app.R;
 
 public class serversFragment extends Fragment {
     MainNavigation mainNavigation = new MainNavigation();
-    String[] json_urls = {
+    public static String[] json_urls = {
             "https://ark-servers.net/api/?object=servers&element=detail&key=KGj7i6Jy3iXCtHyb9SdF3fMPRCWZfPnIigG",
             "https://ark-servers.net/api/?object=servers&element=detail&key=jRWCjGTTrqOz4rpwOs6oCyVEwiuInK1E7k",
             "https://ark-servers.net/api/?object=servers&element=detail&key=4UR0m2e6nfhcoIivIRggr62aU7ZivGu2De",
@@ -40,6 +40,7 @@ public class serversFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mainNavigation.loadServerData(json_urls);
+                mainNavigation.logServerData();
                 MainActivity.toastMessage(getContext(), "Retrieved server data..");
             }
         });
@@ -56,6 +57,6 @@ public class serversFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainNavigation.loadServerData(json_urls);
+        //mainNavigation.loadServerData(json_urls);
     }
 }
