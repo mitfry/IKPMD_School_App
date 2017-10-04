@@ -16,7 +16,7 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    
+
     <style name="txtField_style">
         <item name="android:background">@drawable/txtfield_background</item>
         <item name="android:gravity">center</item>
@@ -40,6 +40,14 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#AFB1B4</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="txtViewServerData_style">
+        <item name="android:background">@drawable/txtfield_background</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ems">10</item>
         <item name="android:layout_margin">5dp</item>
     </style>
 

@@ -7,11 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import layout.dinoDataFragment;
 import layout.editDataFragment;
@@ -19,7 +17,7 @@ import layout.serversFragment;
 import s1080488.ikpmd_app.Threads.fetchServerData;
 
 
-public class MainNavigation extends AppCompatActivity {
+public class MainNavigation extends AppCompatActivity implements fetchServerData.AsyncResponse {
     Fragment bottomNavFragment;
     public static String serverData;
     public static ArrayList<String> serversData;
@@ -29,7 +27,6 @@ public class MainNavigation extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     getSupportActionBar().setTitle(R.string.title_servers);
@@ -49,7 +46,6 @@ public class MainNavigation extends AppCompatActivity {
             }
             return false;
         }
-
     };
 
     @Override
@@ -59,13 +55,22 @@ public class MainNavigation extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //prepare server data
+        //Prepare server data for local use
         loadServerData(serversFragment.json_urls);
 
         //Set default title for this fragment
         getSupportActionBar().setTitle(R.string.title_servers);
     }
 
+    //This overrides the implemented method from AsyncResponse
+    @Override
+    public void processFinished() {
+        //This code is run when the asyncTask completes
+        //show the results loaded so far
+        setServerData();
+    }
+
+    //Switch between fragments
     public void changeFragment() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction().setCustomAnimations(android.R.anim.fade_in,
@@ -74,30 +79,27 @@ public class MainNavigation extends AppCompatActivity {
         ft.commit();
     }
 
+    //Clear serversData list and reload it from internet
     public void loadServerData(String[] urls) {
-        //Clear serversData list
         serversData = new ArrayList<>();
         for (String url : urls) {
-            fetchServerData process = new fetchServerData(url);
+            fetchServerData process = new fetchServerData(url, this);
             process.execute();
         }
     }
 
-    public void logServerData(){
-        Log.d("ServersData ->"," "+serversData);
-    }
-
-
+    //Show results in serverFragment
     public void setServerData() {
-        //Set results in fragment
-        if (serversData.get(0).contains("Island")) {
-            serversFragment.tvServerData1.setText(serversData.get(0));
-        } else if (serversData.get(1).contains("Scorched Earth")) {
-            serversFragment.tvServerData2.setText(serversData.get(1));
-        } else if (serversData.get(2).contains("The Center")) {
-            serversFragment.tvServerData3.setText(serversData.get(2));
-        } else if (serversData.get(3).contains("Ragnarok")) {
-            serversFragment.tvServerData4.setText(serversData.get(3));
+        for (int i = 0; i < serversData.size(); i++) {
+            if (serversData.get(i).contains("Island")) {
+                serversFragment.tvServerData1.setText(serversData.get(i));
+            } else if (serversData.get(i).contains("Scorched")) {
+                serversFragment.tvServerData2.setText(serversData.get(i));
+            } else if (serversData.get(i).contains("Center")) {
+                serversFragment.tvServerData3.setText(serversData.get(i));
+            } else if (serversData.get(i).contains("Ragnarok")) {
+                serversFragment.tvServerData4.setText(serversData.get(i));
+            }
         }
     }
 }

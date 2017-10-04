@@ -17,41 +17,35 @@
             android:id="@+id/btnRefreshServers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Refresh Server Info" />
+            android:text="@string/refresh_server_info" />
 
         <TextView
             android:id="@+id/tvServerData1"
-            style="@style/txtField_style"
+            style="@style/txtViewServerData_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Servers Fragment 1" />
+            android:text="@string/no_server_found" />
 
         <TextView
             android:id="@+id/tvServerData2"
-            style="@style/txtField_style"
+            style="@style/txtViewServerData_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Servers Fragment 2" />
+            android:text="@string/no_server_found" />
 
         <TextView
             android:id="@+id/tvServerData3"
-            style="@style/txtField_style"
+            style="@style/txtViewServerData_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Servers Fragment 3" />
+            android:text="@string/no_server_found" />
 
         <TextView
             android:id="@+id/tvServerData4"
-            style="@style/txtField_style"
+            style="@style/txtViewServerData_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Servers Fragment 4" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </ScrollView>
+            android:text="@string/no_server_found" />
 
     </LinearLayout>
 
