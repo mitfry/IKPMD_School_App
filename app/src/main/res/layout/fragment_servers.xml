@@ -11,19 +11,15 @@
         android:id="@+id/serverDataLinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/btnRefreshServers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/refresh_server_info" />
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/tvServerData1"
             style="@style/txtViewServerData_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/no_server_found" />
 
         <TextView
@@ -31,6 +27,7 @@
             style="@style/txtViewServerData_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/no_server_found" />
 
         <TextView
@@ -38,6 +35,7 @@
             style="@style/txtViewServerData_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/no_server_found" />
 
         <TextView
@@ -45,7 +43,15 @@
             style="@style/txtViewServerData_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/no_server_found" />
+
+        <Button
+            android:id="@+id/btnRefreshServers"
+            style="@style/btn_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/refresh_server_info" />
 
     </LinearLayout>
 

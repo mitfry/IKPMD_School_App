@@ -19,10 +19,10 @@ public class serversFragment extends Fragment {
     Button btnFreshServers;
 
     public static String[] json_urls = {
-            "https://ark-servers.net/api/?object=servers&element=detail&key=KGj7i6Jy3iXCtHyb9SdF3fMPRCWZfPnIigG",
-            "https://ark-servers.net/api/?object=servers&element=detail&key=jRWCjGTTrqOz4rpwOs6oCyVEwiuInK1E7k",
-            "https://ark-servers.net/api/?object=servers&element=detail&key=4UR0m2e6nfhcoIivIRggr62aU7ZivGu2De",
-            "https://ark-servers.net/api/?object=servers&element=detail&key=nby8sdVJIp7dbC92sG3ewImp2dX0AbFmJ8C"
+        "https://ark-servers.net/api/?object=servers&element=detail&key=KGj7i6Jy3iXCtHyb9SdF3fMPRCWZfPnIigG",
+        "https://ark-servers.net/api/?object=servers&element=detail&key=jRWCjGTTrqOz4rpwOs6oCyVEwiuInK1E7k",
+        "https://ark-servers.net/api/?object=servers&element=detail&key=4UR0m2e6nfhcoIivIRggr62aU7ZivGu2De",
+        "https://ark-servers.net/api/?object=servers&element=detail&key=nby8sdVJIp7dbC92sG3ewImp2dX0AbFmJ8C"
     };
 
     @Override

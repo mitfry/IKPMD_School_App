@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //Retrieve username intent from mainActivity
         String intentUsername = getIntent().getStringExtra("intentUsername");
+
         //Add capital letter to username
         intentUsername = intentUsername.substring(0, 1).toUpperCase() + intentUsername.substring(1);
         TextView txtIntentUsername = (TextView) findViewById(R.id.txtIntentUsername);

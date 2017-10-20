@@ -29,12 +29,23 @@ public class editDataFragment extends Fragment {
         btnSaveDinoData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    dbHelper.openDatabaseConnection();
-                    dbHelper.insertToDatabase(txtDinoName.getText().toString());
-                    dbHelper.closeDatabaseConnection();
-                    MainActivity.toastMessage(getView().getContext(), txtDinoName.getText() +" successfully added.");
-                } catch (Exception e) {
+                //Remove spaces and check if not empty before insert
+                if (!(txtDinoName.getText().toString().trim().equals(""))) {
+                    try {
+                        dbHelper.openDatabaseConnection();
+                        dbHelper.insertToDatabase(txtDinoName.getText().toString().trim());
+                        dbHelper.closeDatabaseConnection();
+                        MainActivity.toastMessage(getView().getContext(), txtDinoName.getText() + " successfully added.");
+
+                        //Clear text field
+                        txtDinoName.setText("");
+                    } catch (Exception e) {
+                        MainActivity.toastMessage(getView().getContext(), "Data could not be added.");
+                    }
+                }
+                else {
+                    //Clear text field
+                    txtDinoName.setText("");
                     MainActivity.toastMessage(getView().getContext(), "Name field is empty.");
                 }
             }

@@ -21,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //Database properties
     private static final String dbName = "DinoDeluxe.db";
-    private static int dbVersion = 1;
+    private static int dbVersion = 7;
 
     //Table / column properties
     private static final String dbTable = "dd_dinos_wild";
@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //SQL queries
     private static final String dbCreateTable = "CREATE TABLE " + dbTable + " (" + dbUID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + dbColName + " VARCHAR(255));";
-    private static final String dbDropTable = "DROP TABLE IF EXIST" + dbTable + ";";
+    private static final String dbDropTable = "DROP TABLE IF EXISTS " + dbTable + ";";
 
     private Context context;
 
@@ -68,16 +68,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //Open Database connection
         try {
             ddDatabase = this.getWritableDatabase();
-            MainActivity.toastMessage(context, "Database connection succeeded.");
+            //MainActivity.toastMessage(context, "Database connection succeeded.");
         } catch (Exception e) {
-            MainActivity.toastMessage(context, "Database connection failed.");
+            //MainActivity.toastMessage(context, "Database connection failed.");
         }
     }
 
     public void closeDatabaseConnection(){
         //Close database connection
         this.close();
-        MainActivity.toastMessage(context, "Database connection closed.");
+        //MainActivity.toastMessage(context, "Database connection closed.");
     }
 
     public void insertToDatabase(String name) {
