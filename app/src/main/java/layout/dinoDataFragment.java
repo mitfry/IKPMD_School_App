@@ -11,6 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -28,10 +31,12 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
     ArrayAdapter<String> allDinoAdapter;
 
     public static ArrayList<String> dinoData;
+    TableLayout dinoTableLayout;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         dinoGridView = (GridView) getView().findViewById(R.id.gridDinoData);
 
         btnBackToAllDinos = (Button) getView().findViewById(R.id.btnBackToAllDinos);
@@ -40,16 +45,15 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
         btnBackToAllDinos.setOnClickListener(this);
         btnSaveDinoDataLocally.setOnClickListener(this);
 
+        dinoTableLayout = (TableLayout) getView().findViewById(R.id.tableDinoData);
+
 
         dinoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MainActivity.toastMessage(getContext(), allDinos.get(position));
 
-                //showDinoDataOnGrid(allDinos.get(position));
                 loadDinoDataFromJson(allDinos.get(position));
-
-
             }
         });
 
@@ -59,7 +63,7 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
     }
 
     //Start thread to load chosen dino data
-    public void loadDinoDataFromJson(String dinoName){
+    public void loadDinoDataFromJson(String dinoName) {
         fetchDinoData process = new fetchDinoData(dinoName, this);
         process.execute();
     }
@@ -77,6 +81,8 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
             case R.id.btnBackToAllDinos:
                 MainActivity.toastMessage(getContext(), "Back button");
 
+                dinoTableLayout.setVisibility(View.INVISIBLE);
+                dinoGridView.setVisibility(View.VISIBLE);
                 reloadDinoData();
                 break;
 
@@ -91,11 +97,33 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
 
 
     public void showDinoDataOnGrid() {
+        int columnCounter = 0;
+        TableRow row = new TableRow(this.getContext());
         allDinos.clear();
         allDinos = dinoData;
 
-
         showNewDataOnGrid();
+
+        for (int i = 0; i < allDinos.size(); i++) {
+            if (columnCounter == columns) {
+                dinoTableLayout.addView(row);
+                row = new TableRow(this.getContext());
+                columnCounter = 0;
+            }
+
+            String dino = allDinos.get(i);
+            TextView dinoStat = new TextView(this.getContext());
+            dinoStat.setText(dino);
+
+            TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+            params.setMargins(15, 10, 10, 15);
+
+            row.addView(dinoStat, params);
+            columnCounter++;
+        }
+
+        dinoTableLayout.setVisibility(View.VISIBLE);
+        dinoGridView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -138,5 +166,9 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
 
         // Data bind GridView with ArrayAdapter
         dinoGridView.setAdapter(allDinoAdapter);
+
+        int count = dinoTableLayout.getChildCount();
+        for (int i = 0; i < count; i++)
+            dinoTableLayout.removeView(dinoTableLayout.getChildAt(i));
     }
 }
