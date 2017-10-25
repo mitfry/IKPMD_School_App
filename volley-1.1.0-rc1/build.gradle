@@ -1,0 +1,4 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('volley-1.1.0-rc1.aar'))
+dependencies {
+}

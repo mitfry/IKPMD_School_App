@@ -48,18 +48,16 @@ public class fetchDinoData extends AsyncTask<Void, Void, Void> {
             //URL for API to send the right dino data back to App.
             URL url = new URL("https://www.dinodeluxe.eu/DinoDeluxe_App/serverDinoData.php");
 
+            //Write clicked DinoName into post data
             JSONObject postDataParams = new JSONObject();
             postDataParams.put("dinoName", dinoName);
-            //Log.d("params", postDataParams.toString());
 
-            //Default reply encoded in API because code below doesn't work yet.
-            //Post data seems incorrect
+            //Setup connection to retrieve JSON dino data
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(15000 /* milliseconds */);
             urlConnection.setConnectTimeout(15000 /* milliseconds */);
             urlConnection.setRequestMethod("POST");
-            //urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            urlConnection.setRequestProperty("Content-Type", "text/html; charset=UTF-8");
+            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
 
@@ -67,7 +65,6 @@ public class fetchDinoData extends AsyncTask<Void, Void, Void> {
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
             writer.write(getPostDataString(postDataParams));
-
             writer.flush();
             writer.close();
             os.close();

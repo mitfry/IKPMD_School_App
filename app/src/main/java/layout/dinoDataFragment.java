@@ -47,7 +47,6 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
 
         dinoTableLayout = (TableLayout) getView().findViewById(R.id.tableDinoData);
 
-
         dinoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -62,16 +61,16 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
         reloadDinoData();
     }
 
-    //Start thread to load chosen dino data
-    public void loadDinoDataFromJson(String dinoName) {
+    //Start thread to load chosen dino data.
+    public void loadDinoDataFromJson(final String dinoName) {
         fetchDinoData process = new fetchDinoData(dinoName, this);
         process.execute();
     }
 
-    //This overrides the implemented method from AsyncResponse
+    //This overrides the implemented method from AsyncResponse.
     @Override
     public void processFinished() {
-        //This code is run when the asyncTask completes
+        //This code is run when the asyncTask completes.
         showDinoDataOnGrid();
     }
 
@@ -95,11 +94,10 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-
     public void showDinoDataOnGrid() {
         int columnCounter = 0;
         TableRow row = new TableRow(this.getContext());
-        allDinos.clear();
+        allDinos = new ArrayList<>();
         allDinos = dinoData;
 
         showNewDataOnGrid();
@@ -134,8 +132,8 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
     }
 
     public void reloadDinoData() {
-        allDinos.clear();
-        columns = 2;
+        allDinos = new ArrayList<>();
+        columns = 3;
         final DatabaseHelper dbHelper = new DatabaseHelper(this.getContext());
 
         //Open Database Connection
@@ -143,9 +141,9 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
 
         Cursor dinoCursor = dbHelper.retrieveFromDatabase("dd_dinos_wild");
         while (dinoCursor.moveToNext()) {
-            String id = dinoCursor.getString(0);
+            //String id = dinoCursor.getString(0);
             String name = dinoCursor.getString(1);
-            allDinos.add(id);
+            //allDinos.add(id);
             allDinos.add(name);
             //MainActivity.toastMessage(this.getContext(), "Found dino: " + name);
         }
@@ -157,18 +155,22 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
     }
 
     public void showNewDataOnGrid() {
-        //set proper amount of columns
+        //Set proper amount of columns.
         dinoGridView.setNumColumns(columns);
 
-        // Create a new ArrayAdapter
+        //Create a new ArrayAdapter.
         allDinoAdapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1, allDinos);
 
-        // Data bind GridView with ArrayAdapter
+        //Data bind GridView with ArrayAdapter.
         dinoGridView.setAdapter(allDinoAdapter);
 
-        int count = dinoTableLayout.getChildCount();
-        for (int i = 0; i < count; i++)
-            dinoTableLayout.removeView(dinoTableLayout.getChildAt(i));
+        //Clear all tableData before showing new data.
+        if (dinoTableLayout.getRootView() != null) {
+            int i = 0;
+            while (dinoTableLayout.getChildCount() != 0) {
+                dinoTableLayout.removeViewAt(i);
+            }
+        }
     }
 }

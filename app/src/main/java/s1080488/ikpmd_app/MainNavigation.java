@@ -1,5 +1,6 @@
 package s1080488.ikpmd_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -18,6 +21,7 @@ import s1080488.ikpmd_app.Threads.fetchServerData;
 
 
 public class MainNavigation extends AppCompatActivity implements fetchServerData.AsyncResponse {
+    MainActivity mainActivity = new MainActivity();
     Fragment bottomNavFragment;
     public static String serverData;
     public static ArrayList<String> serversData;
@@ -60,6 +64,20 @@ public class MainNavigation extends AppCompatActivity implements fetchServerData
 
         //Set default title for this fragment
         getSupportActionBar().setTitle(R.string.title_servers);
+
+        //Retrieve all user data after successful login using intents.
+        //Will later be used for editing account details!
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("username");
+        String email = intent.getStringExtra("email");
+        String firstname = intent.getStringExtra("firstname");
+        String lastname = intent.getStringExtra("lastname");
+        String ign = intent.getStringExtra("ign");
+        String u_password = intent.getStringExtra("u_password");
+
+        //Add capital letter to username
+        username = username.substring(0, 1).toUpperCase() + username.substring(1);
+        Toast.makeText(this.getApplicationContext(), "Welcome " + username + "!", Toast.LENGTH_LONG).show();
     }
 
     //This overrides the implemented method from AsyncResponse

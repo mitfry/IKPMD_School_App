@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="50dp"
+    android:paddingRight="50dp"
+    tools:context="s1080488.ikpmd_app.RegisterActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
+
+    <TextView
+        android:id="@+id/lblMandatory"
+        style="@style/lbl_style"
+        android:layout_marginTop="22dp"
+        android:gravity="start"
+        android:text="@string/mandatory" />
+
+    <EditText
+        android:id="@+id/etUsername"
+        style="@style/txtField_style"
+        android:digits="qwertyuiopasdfghjklzxcvbnm0123456789"
+        android:hint="@string/username"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/etEmail"
+        style="@style/txtField_style"
+        android:digits="qwertyuiopasdfghjklzxcvbnm0123456789@.-_"
+        android:hint="@string/e_mail_address"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        style="@style/txtField_style"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/lblOther"
+        style="@style/lbl_style"
+        android:layout_marginTop="22dp"
+        android:gravity="start"
+        android:text="@string/extra" />
+
+    <EditText
+        android:id="@+id/etFirstname"
+        style="@style/txtField_style"
+        android:hint="@string/first_name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/etLastname"
+        style="@style/txtField_style"
+        android:hint="@string/last_name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/etIGN"
+        style="@style/txtField_style"
+        android:hint="@string/in_game_name_alias"
+        android:inputType="textVisiblePassword" />
+
+    <Button
+        android:id="@+id/btnRegister"
+        style="@style/btn_style"
+        android:text="@string/register" />
+
+</LinearLayout>

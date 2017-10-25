@@ -50,7 +50,6 @@ public class editDataFragment extends Fragment {
                 }
             }
         });
-
     }
 
     @Override

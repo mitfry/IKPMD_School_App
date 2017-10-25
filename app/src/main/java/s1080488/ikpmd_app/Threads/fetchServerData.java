@@ -40,7 +40,6 @@ public class fetchServerData extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         try {
             URL url = new URL(json_url);
-            Log.d("json_url", " " + json_url);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             InputStream dataStream = urlConnection.getInputStream();
             BufferedReader dataReader = new BufferedReader(new InputStreamReader(dataStream));
@@ -55,11 +54,12 @@ public class fetchServerData extends AsyncTask<Void, Void, Void> {
             JSONObject jsonDataObject = new JSONObject(rawStreamData);
 
             //Make data more easily readable
-            allParsedStreamData = "Name: " + jsonDataObject.getString("name") + "\n" +
+            allParsedStreamData = "Name: " + jsonDataObject.getString("hostname").substring(0, 45) + "\n" +
                     "Address: " + jsonDataObject.getString("address") + "\n" +
                     "Map name: " + jsonDataObject.getString("map") + "\n" +
                     "Location: " + jsonDataObject.getString("location") + "\n" +
-                    "Data from: " + jsonDataObject.getString("last_check") + "\n";
+                    "Data from: " + jsonDataObject.getString("last_check") + "\n" +
+                    "Online Players: " + jsonDataObject.getString("players") + "\n";
 
         } catch (JSONException | IOException e) {
             e.printStackTrace();

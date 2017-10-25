@@ -37,7 +37,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, dbName, null, dbVersion);
         this.context = context;
-        MainActivity.toastMessage(context, "Constructor called.");
     }
 
     @Override
@@ -68,16 +67,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //Open Database connection
         try {
             ddDatabase = this.getWritableDatabase();
-            //MainActivity.toastMessage(context, "Database connection succeeded.");
         } catch (Exception e) {
-            //MainActivity.toastMessage(context, "Database connection failed.");
+            MainActivity.toastMessage(context, "Database connection failed.");
         }
     }
 
     public void closeDatabaseConnection(){
         //Close database connection
         this.close();
-        //MainActivity.toastMessage(context, "Database connection closed.");
     }
 
     public void insertToDatabase(String name) {
