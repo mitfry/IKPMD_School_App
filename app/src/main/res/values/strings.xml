@@ -28,10 +28,12 @@
     <string name="e_mail_address">E-mail address *</string>
     <string name="password">Password *</string>
     <string name="extra">Extra :</string>
-    <string name="first_name">First name</string>
+    <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="in_game_name_alias">In-Game Name/Alias</string>
     <string name="register">Register</string>
+    <string name="enter_dino_name">Enter Dino Name</string>
+    <string name="add_to_data">Add to data</string>
 
 
 </resources>
