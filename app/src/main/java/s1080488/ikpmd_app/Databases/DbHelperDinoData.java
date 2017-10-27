@@ -2,13 +2,10 @@ package s1080488.ikpmd_app.Databases;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Entity;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.ContactsContract;
-import android.util.Log;
 
 import s1080488.ikpmd_app.MainActivity;
 
@@ -16,25 +13,33 @@ import s1080488.ikpmd_app.MainActivity;
  * Created by Mitchell on 22-9-2017.
  */
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+//TO-DO:
+//Create one dataBase helper that can handle different requests.
+//Move database properties below to a separate databaseInfo file for better scalability.
+
+public class DbHelperDinoData extends SQLiteOpenHelper {
     SQLiteDatabase ddDatabase;
 
     //Database properties
     private static final String dbName = "DinoDeluxe.db";
-    private static int dbVersion = 7;
+    private static int dbVersion = 14;
 
     //Table / column properties
-    private static final String dbTable = "dd_dinos_wild";
+    private static final String dbTable = "dd_dino_data";
     private static final String dbUID = "_id";
     private static final String dbColName = "name";
+    private static final String dbColString = "data_string";
+    private static final String dbColColumns = "columns_required";
 
     //SQL queries
-    private static final String dbCreateTable = "CREATE TABLE " + dbTable + " (" + dbUID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + dbColName + " VARCHAR(255));";
-    private static final String dbDropTable = "DROP TABLE IF EXISTS " + dbTable + ";";
+    private static final String dbCreateTableDinoData = "CREATE TABLE 'dd_dino_data' (" + dbUID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + dbColName + " VARCHAR(255), " + dbColString + " VARCHAR(255), " + dbColColumns + " INT(5));";
+    private static final String dbCreateTableNames = "CREATE TABLE 'dd_dinos_wild' (" + dbUID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + dbColName + " VARCHAR(255));";
+    private static final String dbDropTable = "DROP TABLE IF EXISTS 'dd_dino_data';";
+    private static final String dbDropTable2 = "DROP TABLE IF EXISTS 'dd_dinos_wild';";
 
     private Context context;
 
-    public DatabaseHelper(Context context) {
+    public DbHelperDinoData(Context context) {
         super(context, dbName, null, dbVersion);
         this.context = context;
     }
@@ -43,7 +48,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Create tables
         try {
-            db.execSQL(dbCreateTable);
+            db.execSQL(dbCreateTableDinoData);
+            db.execSQL(dbCreateTableNames);
             MainActivity.toastMessage(context, "dbCreateTable successfully executed.");
         } catch (SQLException e) {
             MainActivity.toastMessage(context, "dbCreateTable executed, but failed." + e);
@@ -56,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Drop tables
         try {
             db.execSQL(dbDropTable);
+            db.execSQL(dbDropTable2);
             onCreate(db);
             MainActivity.toastMessage(context, "dbDropTable successfully executed.");
         } catch (SQLException e) {
@@ -77,11 +84,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.close();
     }
 
-    public void insertToDatabase(String name) {
+    public void insertToDatabase(String name, String data_string, int columns_required) {
         //Execute insert query
         try {
             ContentValues cV = new ContentValues();
             cV.put(dbColName, name);
+            cV.put(dbColString, data_string);
+            cV.put(dbColColumns, columns_required);
 
             ddDatabase.insert(dbTable, dbUID, cV);
             MainActivity.toastMessage(context, "Inserting data succeeded.");
@@ -91,7 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor retrieveFromDatabase(String table) {
-        String[] columns = {dbUID, dbColName};
+        String[] columns = {dbUID, dbColName, dbColString, dbColColumns};
         return ddDatabase.query(table, columns, null, null, null, null, null);
     }
 }

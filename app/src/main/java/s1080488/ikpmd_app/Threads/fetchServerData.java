@@ -58,8 +58,8 @@ public class fetchServerData extends AsyncTask<Void, Void, Void> {
                     "Address: " + jsonDataObject.getString("address") + "\n" +
                     "Map name: " + jsonDataObject.getString("map") + "\n" +
                     "Location: " + jsonDataObject.getString("location") + "\n" +
-                    "Data from: " + jsonDataObject.getString("last_check") + "\n" +
-                    "Online Players: " + jsonDataObject.getString("players") + "\n";
+                    "Online Players: " + jsonDataObject.getString("players") + "\n" +
+                    "Data from: " + jsonDataObject.getString("last_check") + "\n";
 
         } catch (JSONException | IOException e) {
             e.printStackTrace();

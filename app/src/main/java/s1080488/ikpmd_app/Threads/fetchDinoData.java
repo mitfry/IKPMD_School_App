@@ -294,7 +294,7 @@ public class fetchDinoData extends AsyncTask<Void, Void, Void> {
     }
 
     //Might be useless after new POST code
-    public String getPostDataString(JSONObject params) throws Exception {
+    private String getPostDataString(JSONObject params) throws Exception {
 
         StringBuilder result = new StringBuilder();
         boolean first = true;

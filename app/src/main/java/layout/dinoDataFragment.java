@@ -4,6 +4,8 @@ package layout;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +18,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import s1080488.ikpmd_app.Databases.DatabaseHelper;
+import s1080488.ikpmd_app.Databases.DbHelperDinoData;
+import s1080488.ikpmd_app.Databases.DbHelperDinoNames;
 import s1080488.ikpmd_app.MainActivity;
 import s1080488.ikpmd_app.R;
 import s1080488.ikpmd_app.Threads.fetchDinoData;
@@ -28,10 +32,16 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
     public static int columns = 0;
 
     ArrayList<String> allDinos = new ArrayList<>();
+    ArrayList<String> checkArray = new ArrayList<>();
     ArrayAdapter<String> allDinoAdapter;
 
+    //ArrayList that will hold all dino data to be displayed in the tableLayout.
     public static ArrayList<String> dinoData;
     TableLayout dinoTableLayout;
+
+    String chosenDino = "";
+    String dataString = "";
+    public static String strSeparator = "__,__";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -50,9 +60,18 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
         dinoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MainActivity.toastMessage(getContext(), allDinos.get(position));
+                chosenDino = allDinos.get(position);
+                MainActivity.toastMessage(getContext(), chosenDino);
 
-                loadDinoDataFromJson(allDinos.get(position));
+                if (checkDinoDataExistsLocally(chosenDino)) {
+                    dinoData = convertStringToArray(dataString);
+                    showDinoDataOnTableLayout();
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Dino Data (Offline data)");
+                } else {
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Dino Data (Live data)");
+                    loadDinoDataFromJson(chosenDino);
+                }
+
             }
         });
 
@@ -71,22 +90,30 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void processFinished() {
         //This code is run when the asyncTask completes.
-        showDinoDataOnGrid();
+        showDinoDataOnTableLayout();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnBackToAllDinos:
-                MainActivity.toastMessage(getContext(), "Back button");
+                MainActivity.toastMessage(getContext(), "Displaying all available dino's.");
 
                 dinoTableLayout.setVisibility(View.INVISIBLE);
                 dinoGridView.setVisibility(View.VISIBLE);
+                btnSaveDinoDataLocally.setVisibility(View.INVISIBLE);
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.title_database_info);
+
                 reloadDinoData();
                 break;
 
             case R.id.btnSaveDinoDataLocally:
-                MainActivity.toastMessage(getContext(), "Save button");
+                MainActivity.toastMessage(getContext(), "Attempting to save data locally.");
+
+                if (!checkDinoDataExistsLocally(chosenDino)) {
+                    saveDinoDataLocally(chosenDino, columns);
+                } else
+                    MainActivity.toastMessage(this.getContext(), chosenDino + " data already exists.");
                 break;
 
             default:
@@ -94,7 +121,62 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    public void showDinoDataOnGrid() {
+    public void saveDinoDataLocally(String dinoName, int columns) {
+        final DbHelperDinoData dbHelper = new DbHelperDinoData(this.getContext());
+        String dataString = convertArrayToString(allDinos);
+        dbHelper.openDatabaseConnection();
+
+        dbHelper.insertToDatabase(dinoName, dataString, columns);
+
+        dbHelper.closeDatabaseConnection();
+    }
+
+    public boolean checkDinoDataExistsLocally(String dinoType) {
+        boolean exists = false;
+        final DbHelperDinoData dbHelper = new DbHelperDinoData(this.getContext());
+
+        dbHelper.openDatabaseConnection();
+        Cursor dinoCursor = dbHelper.retrieveFromDatabase("dd_dino_data");
+
+        dinoCursor.moveToFirst();
+        while (dinoCursor.moveToNext()) {
+            if (dinoCursor.getString(dinoCursor.getColumnIndex("name")).equals(dinoType)) {
+                dataString = dinoCursor.getString(dinoCursor.getColumnIndex("data_string"));
+                columns = dinoCursor.getInt(dinoCursor.getColumnIndex("columns_required"));
+                exists = true;
+            } else {
+                exists = false;
+            }
+        }
+
+        dbHelper.closeDatabaseConnection();
+
+        return exists;
+    }
+
+    public static String convertArrayToString(ArrayList<String> array) {
+        String str = "";
+        for (int i = 0; i < array.size(); i++) {
+            str = str + array.get(i);
+            // Do not append comma at the end of last element
+            if (i < array.size() - 1) {
+                str = str + strSeparator;
+            }
+        }
+        return str;
+    }
+
+    public static ArrayList<String> convertStringToArray(String str) {
+        ArrayList<String> savedDataList = new ArrayList<>(Arrays.asList(str.split(strSeparator)));
+
+        return savedDataList;
+    }
+
+
+    public void showDinoDataOnTableLayout() {
+        //Show save button
+        btnSaveDinoDataLocally.setVisibility(View.VISIBLE);
+
         int columnCounter = 0;
         TableRow row = new TableRow(this.getContext());
         allDinos = new ArrayList<>();
@@ -134,7 +216,7 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
     public void reloadDinoData() {
         allDinos = new ArrayList<>();
         columns = 3;
-        final DatabaseHelper dbHelper = new DatabaseHelper(this.getContext());
+        final DbHelperDinoNames dbHelper = new DbHelperDinoNames(this.getContext());
 
         //Open Database Connection
         dbHelper.openDatabaseConnection();

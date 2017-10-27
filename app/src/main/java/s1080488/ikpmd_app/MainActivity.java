@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
     String username;
     String email;
     String firstname;
-    String lastname;
-    String ign;
-    String u_password;
+    String lastname = null;
+    String ign = null;
+    String u_password = null;
 
     @Override       // Because : Inheritance
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
         txtPassword = (EditText) findViewById(R.id.txtPassword);
 
         //Snel inloggen
-        txtUsername.setText("test");
-        txtPassword.setText("test");
+//        txtUsername.setText("test");
+//        txtPassword.setText("test");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,110 +94,111 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!i_username.equals("") && !i_password.equals("")) {
 
-                    Response.Listener<String> responseListener = new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                final JSONObject jsonResponse = new JSONObject(response);
-                                boolean success = jsonResponse.getBoolean("success");
 
-                                if (txtUsername.getText().toString().equals("test") &&
-                                        txtPassword.getText().toString().equals("test")) {
-                                    counter = 3;
-                                    Toast toast = Toast.makeText(getApplicationContext(),
-                                            "Redirecting...", Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.BOTTOM | CENTER, 0, 15);
-                                    toast.show();
+                    if (txtUsername.getText().toString().equals("test") &&
+                            txtPassword.getText().toString().equals("test")) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Redirecting...", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.BOTTOM | CENTER, 0, 15);
+                        toast.show();
 
-                                    showColorOnTextView(txtUsername, "GREEN");
-                                    showColorOnTextView(txtPassword, "GREEN");
+                        showColorOnTextView(txtUsername, "GREEN");
+                        showColorOnTextView(txtPassword, "GREEN");
 
-                                    Handler feedbackHandler = new Handler();
-                                    feedbackHandler.postDelayed(new Runnable() {
-                                        public void run() {
+                        Handler feedbackHandler = new Handler();
+                        feedbackHandler.postDelayed(new Runnable() {
+                            public void run() {
 
-                                            //Test Data transfer to login activity using intent
-                                            Intent intent = new Intent(getApplicationContext(),
-                                                    MainNavigation.class);
+                                //Test Data transfer to login activity using intent
+                                Intent intent = new Intent(getApplicationContext(),
+                                        MainNavigation.class);
 
-                                            intent.putExtra("username",
-                                                    txtUsername.getText().toString());
+                                intent.putExtra("username",
+                                        txtUsername.getText().toString());
 
-                                            startActivity(intent);
-                                        }
-                                    }, 100);
+                                startActivity(intent);
+                            }
+                        }, 1000);
 
-                                } else if (success) {
-                                    counter = 3;
-                                    Toast toast = Toast.makeText(getApplicationContext(),
-                                            "Redirecting...", Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.BOTTOM | CENTER, 0, 15);
-                                    toast.show();
+                    } else {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    final JSONObject jsonResponse = new JSONObject(response);
+                                    boolean success = jsonResponse.getBoolean("success");
 
-                                    showColorOnTextView(txtUsername, "GREEN");
-                                    showColorOnTextView(txtPassword, "GREEN");
+                                    if (success) {
+                                        Toast toast = Toast.makeText(getApplicationContext(),
+                                                "Redirecting...", Toast.LENGTH_SHORT);
+                                        toast.setGravity(Gravity.BOTTOM | CENTER, 0, 15);
+                                        toast.show();
 
-                                    Handler feedbackHandler = new Handler();
-                                    feedbackHandler.postDelayed(new Runnable() {
-                                        public void run() {
-                                            try {
-                                                //Data transfer to MainNavigation activity using intent
-                                                username = jsonResponse.getString("username");
-                                                email = jsonResponse.getString("email");
-                                                firstname = jsonResponse.getString("firstname");
-                                                lastname = jsonResponse.getString("lastname");
-                                                ign = jsonResponse.getString("ign");
-                                                u_password = jsonResponse.getString("u_password");
+                                        showColorOnTextView(txtUsername, "GREEN");
+                                        showColorOnTextView(txtPassword, "GREEN");
 
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
+                                        Handler feedbackHandler = new Handler();
+                                        feedbackHandler.postDelayed(new Runnable() {
+                                            public void run() {
+                                                try {
+                                                    //Data transfer to MainNavigation activity using intent
+                                                    username = jsonResponse.getString("username");
+                                                    email = jsonResponse.getString("email");
+                                                    firstname = jsonResponse.getString("firstname");
+                                                    lastname = jsonResponse.getString("lastname");
+                                                    ign = jsonResponse.getString("ign");
+                                                    u_password = jsonResponse.getString("u_password");
+
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                                Intent intent = new Intent(MainActivity.this, MainNavigation.class);
+                                                intent.putExtra("username", username);
+                                                intent.putExtra("email", email);
+                                                intent.putExtra("firstname", firstname);
+                                                intent.putExtra("lastname", lastname);
+                                                intent.putExtra("ign", ign);
+                                                intent.putExtra("u_password", u_password);
+
+                                                MainActivity.this.startActivity(intent);
                                             }
-
-                                            Intent intent = new Intent(MainActivity.this, MainNavigation.class);
-                                            intent.putExtra("username", username);
-                                            intent.putExtra("email", email);
-                                            intent.putExtra("firstname", firstname);
-                                            intent.putExtra("lastname", lastname);
-                                            intent.putExtra("ign", ign);
-                                            intent.putExtra("u_password", u_password);
-
-                                            MainActivity.this.startActivity(intent);
-                                        }
-                                    }, 1000);
+                                        }, 1000);
 
 
-                                } else {
-                                    //AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                    //builder.setMessage("Login failed!").setNegativeButton("Retry", null).create().show();
+                                    } else {
+                                        //AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                        //builder.setMessage("Login failed!").setNegativeButton("Retry", null).create().show();
 
-                                    Toast toast = Toast.makeText(getApplicationContext(),
-                                            "Wrong credentials.", Toast.LENGTH_LONG);
-                                    toast.setGravity(Gravity.BOTTOM | CENTER, 0, 15);
-                                    toast.show();
+                                        Toast toast = Toast.makeText(getApplicationContext(),
+                                                "Wrong credentials.", Toast.LENGTH_LONG);
+                                        toast.setGravity(Gravity.BOTTOM | CENTER, 0, 15);
+                                        toast.show();
 
-                                    showColorOnTextView(txtUsername, "RED");
-                                    showColorOnTextView(txtPassword, "RED");
-                                    counter--;
-
-                                    //Disable login button after 3 failed attempts
-                                    if (counter == 0) {
-                                        btnLogin.setEnabled(false);
-                                        btnLogin.setBackgroundColor(Color.parseColor("GREY"));
                                         showColorOnTextView(txtUsername, "RED");
                                         showColorOnTextView(txtPassword, "RED");
+                                        counter--;
+
+                                        //Disable login button after 3 failed attempts
+                                        if (counter == 0) {
+                                            btnLogin.setEnabled(false);
+                                            btnLogin.setBackgroundColor(Color.parseColor("GREY"));
+                                            showColorOnTextView(txtUsername, "RED");
+                                            showColorOnTextView(txtPassword, "RED");
+                                        }
                                     }
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
-                    };
+                        };
 
-                    LoginRequest loginRequest = new LoginRequest(i_username, i_password, responseListener);
-                    RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                    queue.add(loginRequest);
+                        LoginRequest loginRequest = new LoginRequest(i_username, i_password, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                        queue.add(loginRequest);
+                    }
                 } else {
                     toastMessage(MainActivity.this, "Please enter a username and password.");
                 }

@@ -8,11 +8,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Cache;
+import com.android.volley.Network;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import layout.dinoDataFragment;
 import layout.editDataFragment;
@@ -21,7 +39,6 @@ import s1080488.ikpmd_app.Threads.fetchServerData;
 
 
 public class MainNavigation extends AppCompatActivity implements fetchServerData.AsyncResponse {
-    MainActivity mainActivity = new MainActivity();
     Fragment bottomNavFragment;
     public static String serverData;
     public static ArrayList<String> serversData;
@@ -61,6 +78,9 @@ public class MainNavigation extends AppCompatActivity implements fetchServerData
 
         //Prepare server data for local use
         loadServerData(serversFragment.json_urls);
+
+        //Prepare dino types for auto complete
+        fetchAvailableDinoNames();
 
         //Set default title for this fragment
         getSupportActionBar().setTitle(R.string.title_servers);
@@ -119,5 +139,59 @@ public class MainNavigation extends AppCompatActivity implements fetchServerData
                 serversFragment.tvServerData4.setText(serversData.get(i));
             }
         }
+    }
+
+    public void fetchAvailableDinoNames() {
+        RequestQueue mRequestQueue;
+
+        // Instantiate the cache
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        Network network = new BasicNetwork(new HurlStack());
+
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+
+        // Start the queue
+        mRequestQueue.start();
+
+        String url = "https://www.dinodeluxe.eu/DinoDeluxe_App/serverDinoTypes.php";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                editDataFragment.availableDinoTypes.add(response.getString(i));
+
+                            } catch (JSONException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+
+                        }
+
+//                        for (int i = 0; i < response.length(); i++) {
+//                            try {
+//                                editDataFragment.availableDinoTypes.add(response.getString(i));
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+                    }
+
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+
+                    }
+                });
+
+        mRequestQueue.add(jsonArrayRequest);
     }
 }
