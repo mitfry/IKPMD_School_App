@@ -22,7 +22,7 @@ public class RegisterRequest extends StringRequest {
         params.put("firstname", firstname);
         params.put("lastname", lastname);
         params.put("ign", ign);
-        params.put("password", password);
+        params.put("u_password", password);
     }
 
     @Override

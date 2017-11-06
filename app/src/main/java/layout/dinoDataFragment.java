@@ -65,9 +65,9 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
                 if (checkDinoDataExistsLocally(chosenDino)) {
                     dinoData = convertStringToArray(dataString);
                     showDinoDataOnTableLayout();
-                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Dino Data (Offline data)");
+                    ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Dino Data (Offline data)");
                 } else {
-                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Dino Data (Live data)");
+                    ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Dino Data (Live data)");
                     loadDinoDataFromJson(chosenDino);
                 }
 
@@ -101,7 +101,7 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
                 dinoTableLayout.setVisibility(View.INVISIBLE);
                 dinoGridView.setVisibility(View.VISIBLE);
                 btnSaveDinoDataLocally.setVisibility(View.INVISIBLE);
-                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.title_database_info);
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_database_info);
 
                 reloadDinoData();
                 break;
@@ -247,11 +247,11 @@ public class dinoDataFragment extends Fragment implements View.OnClickListener, 
         dinoGridView.setAdapter(allDinoAdapter);
 
         //Clear all tableData before showing new data.
-        if (dinoTableLayout.getRootView() != null) {
-            int i = 0;
-            while (dinoTableLayout.getChildCount() != 0) {
-                dinoTableLayout.removeViewAt(i);
+        this.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dinoTableLayout.removeAllViews();
             }
-        }
+        });
     }
 }

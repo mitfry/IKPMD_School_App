@@ -22,7 +22,7 @@ public class DbHelperDinoData extends SQLiteOpenHelper {
 
     //Database properties
     private static final String dbName = "DinoDeluxe.db";
-    private static int dbVersion = 14;
+    private static int dbVersion = 15;
 
     //Table / column properties
     private static final String dbTable = "dd_dino_data";
